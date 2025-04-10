@@ -47,4 +47,6 @@ Each folder contains an independent contract, with its own code and explanation.
 
 This project is developed by aguilar1x, with the intention of teaching and sharing knowledge about smart contract development using Soroban.
 
+- Here I leave you my [X](https://x.com/aguilar1x1)
+
 ---
