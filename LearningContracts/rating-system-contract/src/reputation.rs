@@ -2,27 +2,12 @@ use soroban_sdk::{contracttype, Address, Env, Symbol, Vec};
 
 use crate::{history, DataKey};
 
-/// Represents a single reputation score record in the system.
-/// Each record contains the score and the timestamp when it was calculated.
-
 #[derive(Clone, Debug, PartialEq, Eq)]
 #[contracttype]
 pub struct ReputationRecord {
-    /// The numerical reputation score (1-5)
     pub score: u32,
-    /// The timestamp when the reputation score was calculated
     pub timestamp: u64,
 }
-
-/// Calculates the reputation score for a seller based on their weighted rating.
-/// The reputation score is a value between 1 and 5 that reflects the seller's overall performance.
-/// 
-/// # Arguments
-/// * `env` - The contract environment
-/// * `seller` - The address of the seller
-/// 
-/// # Returns
-/// * `u32` - The calculated reputation score (1-5)
 
 pub fn reputation_score_calculate(env: Env, seller: Address) -> u32 {
     // fetch the weighted rating for the seller
@@ -37,14 +22,6 @@ pub fn reputation_score_calculate(env: Env, seller: Address) -> u32 {
         _ => 5,
     }
 }
-
-/// Adds a new reputation score record to the seller's history.
-/// This function maintains a chronological history of reputation scores.
-/// 
-/// # Arguments
-/// * `env` - The contract environment
-/// * `seller` - The address of the seller
-/// * `score` - The reputation score to record
 
 pub fn add_reputation_score_history(env: Env, seller: Address, score: u32) {
     // Get current ledger timestamp
