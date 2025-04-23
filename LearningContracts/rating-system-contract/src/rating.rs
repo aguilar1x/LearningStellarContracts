@@ -17,22 +17,21 @@ pub struct Rating {
     pub feedback: Option<String>,
 }
 
-/// Minimum allowed rating value
+/// Minimum valid rating value
 pub const MIN_RATING: u32 = 1;
-/// Maximum allowed rating value
+/// Maximum valid rating value
 pub const MAX_RATING: u32 = 5;
 
-/// Processes a new rating submission for a seller.
-/// This function handles the core rating logic and storage.
+/// Rates a seller based on their rating and weight.
 /// 
 /// # Arguments
 /// * `env` - The contract environment
 /// * `seller` - The address of the seller being rated
 /// * `buyer` - The address of the buyer providing the rating
-/// * `rating` - The rating value (1-5)
-/// * `weight` - The weight of the rating
-/// * `feedback` - Optional feedback text
-/// 
+/// * `rating` - The rating score (1-5)
+/// * `weight` - The weight of the rating (higher weights have more impact)
+/// * `feedback` - Optional feedback text from the buyer    
+///
 /// # Returns
 /// * `bool` - True if the rating was successfully processed
 /// 
@@ -132,8 +131,8 @@ pub fn update_weighted_rating(env: Env, seller: Address, rating: u32, weight: u3
 pub fn calculate_weighted_rating(env: Env, seller: Address) -> f32 {
     let key = DataKey::WeightedRating(seller.clone());
     // Fetch existing total weighted rating and total weight or initialize to zero
-    let (total_weighted_rating, total_weight): (u32, u32) = match env.storage().instance().get(&key)
-    {
+    let (total_weighted_rating, total_weight): (u32, u32) = 
+        match env.storage().instance().get(&key) {
         Some((x, y)) => (x, y),
         None => (0, 0),
     };

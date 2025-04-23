@@ -30,10 +30,11 @@ pub fn _get_rating_history(env: Env, seller: &Address) -> Result<Vec<Rating>, Er
 /// # Returns
 /// * `Result<Vec<ReputationRecord>, Error>` - The reputation history or an error if not found
 
-pub fn get_reputation_history(env: Env, seller: Address) -> Result<Vec<ReputationRecord>, Error> {
+pub fn get_reputation_history(env: Env, seller: &Address) -> Result<Vec<ReputationRecord>, Error> {
     let key = DataKey::ReputationHistory(seller.clone());
     match env.storage().instance().get(&key) {
         Some(reputation_record) => Ok(reputation_record),
         None => Err(Error::ReputationHistoryNotFound),
     }
 }
+

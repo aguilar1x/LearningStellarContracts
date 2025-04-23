@@ -19,7 +19,7 @@ pub struct RatingSystemContract;
 /// DataKey enum defines the different types of data stored in the contract's storage.
 /// Each variant is associated with an Address to maintain separate data for each seller.
 
-#[contracttype] 
+#[contracttype]
 pub enum DataKey {
     /// Stores the complete rating history for a seller
     RatingHistory(Address),
@@ -94,10 +94,10 @@ impl RatingSystemContract {
     /// 
     /// # Panics
     /// * If the seller address is invalid
-    
+
     pub fn seller_reputation_score(env: Env, seller: Address) -> u32 {
         // Validate seller address
-        if seller.to_string().is_empty() || seller.to_string().len() == 0 {
+        if seller.to_string().is_empty() {
             panic!("Seller address is invalid");
         }
 

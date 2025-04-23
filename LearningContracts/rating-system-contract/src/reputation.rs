@@ -14,6 +14,7 @@ pub struct ReputationRecord {
     pub timestamp: u64,
 }
 
+
 /// Calculates the reputation score for a seller based on their weighted rating.
 /// The reputation score is a value between 1 and 5 that reflects the seller's overall performance.
 /// 

@@ -15,9 +15,9 @@ pub enum Error {
     /// This typically occurs when trying to access reputation data for a seller who has no history.
 
     ReputationHistoryNotFound = 1,
-    
+
     /// Error code 2: Indicates that a requested rating history record was not found in storage.
     /// This typically occurs when trying to access rating data for a seller who has no ratings.
-    
+
     RatingHistoryNotFound = 2,
 }
