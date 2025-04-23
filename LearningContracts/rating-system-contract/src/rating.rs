@@ -1,17 +1,42 @@
 use crate::DataKey;
 use soroban_sdk::{contracttype, Address, Env, String, Symbol, Vec};
 
+/// Represents a single rating entry in the system.
+/// Contains all information about a buyer's rating of a seller.
+
 #[derive(Clone, Debug, PartialEq, Eq)]
 #[contracttype]
 pub struct Rating {
+    /// The address of the buyer who provided the rating
     pub buyer: Address,
+    /// The numerical rating value (1-5)
     pub rating: u32,
+    /// The weight of this rating (higher weights have more impact on the final score)
     pub weight: u32,
+    /// Optional feedback text from the buyer
     pub feedback: Option<String>,
 }
 
+/// Minimum valid rating value
 pub const MIN_RATING: u32 = 1;
+/// Maximum valid rating value
 pub const MAX_RATING: u32 = 5;
+
+/// Rates a seller based on their rating and weight.
+/// 
+/// # Arguments
+/// * `env` - The contract environment
+/// * `seller` - The address of the seller being rated
+/// * `buyer` - The address of the buyer providing the rating
+/// * `rating` - The rating score (1-5)
+/// * `weight` - The weight of the rating (higher weights have more impact)
+/// * `feedback` - Optional feedback text from the buyer    
+///
+/// # Returns
+/// * `bool` - True if the rating was successfully processed
+/// 
+/// # Panics
+/// * If the rating is not within the valid range (1-5)
 
 pub fn rate_seller_system(
     env: Env,
@@ -56,6 +81,15 @@ pub fn rate_seller_system(
     true
 }
 
+/// Updates the weighted rating statistics for a seller.
+/// This function maintains running totals of weighted ratings and total weights.
+/// 
+/// # Arguments
+/// * `env` - The contract environment
+/// * `seller` - The address of the seller
+/// * `rating` - The rating value to add
+/// * `weight` - The weight of the rating
+
 pub fn update_weighted_rating(env: Env, seller: Address, rating: u32, weight: u32) {
     // Fetch existing weighted rating and total weight or initialize to zero
     let key = DataKey::WeightedRating(seller.clone());
@@ -80,6 +114,19 @@ pub fn update_weighted_rating(env: Env, seller: Address, rating: u32, weight: u3
         weight,
     );
 }
+
+/// Calculates the weighted average rating for a seller.
+/// This is used as the basis for determining the seller's reputation score.
+/// 
+/// # Arguments
+/// * `env` - The contract environment
+/// * `seller` - The address of the seller
+/// 
+/// # Returns
+/// * `f32` - The calculated weighted average rating
+/// 
+/// # Panics
+/// * If no ratings are available for the seller
 
 pub fn calculate_weighted_rating(env: Env, seller: Address) -> f32 {
     let key = DataKey::WeightedRating(seller.clone());
